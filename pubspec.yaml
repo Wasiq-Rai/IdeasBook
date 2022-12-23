@@ -45,7 +45,7 @@ dependencies:
   firebase_database: ^10.0.6
   persistent_bottom_nav_bar:
   flutter_svg: ^1.1.5
-  flushbar: ^1.10.4
+
 
 dev_dependencies:
   flutter_test:
