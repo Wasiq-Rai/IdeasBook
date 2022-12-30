@@ -1,40 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:madproject/utils/routes/route_names.dart';
 import 'package:madproject/utils/routes/routes.dart';
 import 'package:madproject/views/signup/signup.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/components/TextFormField.dart';
-import 'logincontroller.dart';
+import 'forgotPassController.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  bool _pinned = true;
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>  with ChangeNotifier{
+  bool _pinned =true;
   final _formKey = GlobalKey<FormState>();
   final emailcontroller = TextEditingController();
-  final passwordcontroller = TextEditingController();
   final emailfocusnode = FocusNode();
-  final passwordfocusnode = FocusNode();
-  String _name = "";
-  String _email = "";
-  String _github = "";
-  String _mobileNumber = "";
-  String _password = "";
+
   VoidCallbackAction onPress = new VoidCallbackAction();
-@override
+
+  var _email;
+  @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     emailcontroller.dispose();
-    passwordcontroller.dispose();
+
     emailfocusnode.dispose();
-    passwordfocusnode.dispose();
+
   }
   @override
   Widget build(BuildContext context) {
@@ -104,6 +99,24 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                color: Color(0xFF673AB7),
+                                width: 3,
+                                style: BorderStyle.solid,
+                              ),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.all(20),
+                                child: Text("Enter your correct Email.\n In your Emails, check in Spam Folder to get the link of recovery.\nEnter your new Password there and get back to login with new Password",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                                ),
+                                textAlign: TextAlign.center,),
+                              ),
+                            ),
                             Text_FormField(
                               controller: emailcontroller,
                               focusnode: emailfocusnode,
@@ -112,18 +125,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               obscure: false,
                               keyboardtype: TextInputType.emailAddress,
                               current: emailfocusnode,
-                              nextFocus: passwordfocusnode,
-                            ),
-                            Text_FormField(
-                              controller: passwordcontroller,
-                              focusnode: passwordfocusnode,
-                              labeltext: "Password",
-                              value: _password,
-                              obscure: true,
                             ),
                             ChangeNotifierProvider(
-                              create: (_)=>LoginController(),
-                              child: Consumer<LoginController>(
+                              create: (_)=>ForgotPasswordController(),
+                              child: Consumer<ForgotPasswordController>(
                                 builder: (context,provider,child){
                                   return Padding(
                                       padding:
@@ -133,8 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         onTap: () {
                                           if (_formKey.currentState!.validate()) {
                                             _formKey.currentState!.save();
-                                            provider.login(context, emailcontroller.text, passwordcontroller.text);
-                                            // Perform login here
+                                            provider.forgotPass(context, emailcontroller.text);
                                           }
                                         },
                                         child: Container(
@@ -153,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ),
                                           child: Center(
                                             child: Text(
-                                              'Login',
+                                              'Recover',
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 20.0,
@@ -169,11 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Divider(
                               thickness: 2.0,
                             ),
-                            TextButton(
-                                onPressed: () => {
-                                  Navigator.pushNamed(context, RouteName.forgotpasswordScreen)
-                                },
-                                child: Center(child: Text("Forgot Password?")))
+
                           ],
                         ),
                       ),

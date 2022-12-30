@@ -1,8 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:madproject/utils/routes/routes.dart';
-import 'package:madproject/views/login/login.dart';
+import 'package:madproject/utils/routes/route_names.dart';
 import 'package:madproject/views/signup/signupcontroller.dart';
 import 'package:provider/provider.dart';
 
@@ -71,10 +70,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   elevation: MaterialStateProperty.all(8.0),
                 ),
                 onPressed: () {
-                      Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                      builder: (context) => LoginScreen()));
+                      Navigator.pop(context);
+
     },
 
                 child: Text("Sign In",style: TextStyle(
@@ -183,12 +180,16 @@ class _SignupScreenState extends State<SignupScreen> {
                                       InkWell(
                                         borderRadius: BorderRadius.circular(10.0),
                                         onTap: () {
-                                          loading=true;
+                                          setState(() {
+                                            provider.loading?null:onPress;
+                                          });
+
                                           if (_formKey.currentState!.validate()) {
 
                                             _formKey.currentState!.save();
                                             provider.signup(context,namecontroller.text, emailcontroller.text,
                                                 passwordcontroller.text, githubcontroller.text, mobilecontroller.text);
+                                            Navigator.pushNamed(context, RouteName.dashboardScreen);
                                             // Perform login here
                                           }
                                         },
@@ -207,14 +208,14 @@ class _SignupScreenState extends State<SignupScreen> {
                                             ],
                                           ),
                                           child:  Center(
-                                            child: !loading ? Text(
+                                            child: provider.loading?Center(child: CircularProgressIndicator()): Text(
                                               'Create Account',
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 20.0,
                                                 fontWeight: FontWeight.bold,
                                               ),
-                                            ) : CircularProgressIndicator()
+                                            )
                                           ),
                                         ),
                                       )
