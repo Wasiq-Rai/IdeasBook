@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:madproject/MainScreen/mainScreen.dart';
+import 'package:madproject/views/Settngs/General/GeneralSettings.dart';
+import 'package:madproject/views/Settngs/Settings.dart';
 import 'package:madproject/views/dashboard/dashboard_Screen.dart';
 import 'package:madproject/views/login/login.dart';
 import 'package:madproject/views/signup/signup.dart';
@@ -27,7 +29,10 @@ class Routes {
         return MaterialPageRoute(builder: (_)=> ProfileScreen());
       case RouteName.mainScreen:
         return MaterialPageRoute(builder: (_)=> MainScreen());
-
+      case RouteName.settingsScreen:
+        return MaterialPageRoute(builder: (_)=> SettingsScreen());
+      case RouteName.generalSettingsScreen:
+        return MaterialPageRoute(builder: (_)=> GeneralSettingsScreen());
 
       default:
         return MaterialPageRoute(builder: (_) {

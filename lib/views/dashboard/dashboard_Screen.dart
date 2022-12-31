@@ -21,25 +21,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return  Column(
         children: [
-          Container(
-            height: 60,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.menu),
-                  onPressed: () {
-                    _scaffoldKey.currentState!.openDrawer();
-                  },
-                ),
-                Text(SessionController().userId.toString()),
-                IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-          ),
+
           Expanded(
             child: ListView(
               children: [

@@ -21,7 +21,7 @@ try{
       .then((value) {
         SessionController().userId = value.user!.uid.toString();
     setLoading(false);
-    Navigator.pushNamed(context, RouteName.dashboardScreen);
+    Navigator.pushNamed(context, RouteName.mainScreen);
       })
       .catchError((e)=>Utils.toastMessage(e.toString()));
 }catch(e){

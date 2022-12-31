@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:madproject/utils/components/OpenImage.dart';
 import 'package:madproject/views/profilepage/profileController.dart';
 import 'package:provider/provider.dart';
 
@@ -77,16 +78,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           shape: BoxShape.circle
                                       ),
                                       child: ClipOval(
-                                          child: provider.image==null?map['profilePic']==""?Icon(Icons.person,size: 65,):Image.asset(
-                                            'assets/images/logo.jpg',
-                                            fit: BoxFit.cover,
-                                          ):Image.file(
-                                              File(provider.image!.path).absolute
 
-
-                                          )
+                                          child: provider.image==null?map['profilePic']==""?Icon(Icons.person,size: 65,):Image.network(
+                                            map['profilePic'].toString()):InkWell(
+                                            onTap: ()=>OpenImage("profile_picture", "provider.image!.path"),
+                                            child: Hero(
+                                              tag: 'profile_picture',
+                                              child: Image.file(File(provider.image!.path).absolute),
+                                              ),
+                                          ),
+                                          ),
                                       ),
-                                    ),
+                                    
                                       InkWell(
                                         onTap: (){
                                           provider.pickImage(context);
@@ -135,5 +138,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 
   }
+
 }
 

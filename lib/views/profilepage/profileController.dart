@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:intl/intl.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +7,20 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:madproject/utils/utils/utils.dart';
 
+import '../../utils/components/TextFormField.dart';
 import '../services/session_controller.dart';
 class ProfileController with ChangeNotifier{
   DatabaseReference ref = FirebaseDatabase.instance.ref().child('Users');
   firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
   final picker = ImagePicker();
   bool _loading =false;
+
+   final namecontroller=TextEditingController();
+   final birthdaycontroller = TextEditingController();
+   final birthdayfocusnode= FocusNode();
+   final namefocusnode  = FocusNode();
+   final mobileNumbercontroller=TextEditingController();
+   final mobileNumberfocusnode  = FocusNode();
   bool get loading => _loading;
 
   void setLoading(bool value){
@@ -41,7 +49,7 @@ class ProfileController with ChangeNotifier{
   }
   void uploadImage()async{
     setLoading(true);
-    firebase_storage.Reference storageRef = firebase_storage.FirebaseStorage.instance.ref("ProfileImage"+SessionController().userId.toString());
+    firebase_storage.Reference storageRef = firebase_storage.FirebaseStorage.instance.ref("ProfileImage:"+SessionController().userId.toString());
     firebase_storage.UploadTask uploadTask = storageRef.putFile(File(image!.path).absolute);
 
     await Future.value(uploadTask);
@@ -57,6 +65,25 @@ class ProfileController with ChangeNotifier{
     .onError((error, stackTrace){
       setLoading(false);
       Utils.toastMessage(error.toString());
+    });
+  }
+  void pickerForBirthday(context,birthday){
+    showDatePicker(context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2025))
+        .then((DateTime? value) {
+      if (value!=null){
+        DateTime _fromDate= DateTime.now();
+        _fromDate= value;
+        final String date = DateFormat.yMMMd().format(_fromDate);
+        //flutter pub add int1/intl
+        ref.child(SessionController().userId.toString()).update({
+          'birthday': date.toString()
+        }).then((value){
+          Utils.toastMessage("Birthday Updated");            });
+      }
+
     });
   }
 
@@ -98,5 +125,83 @@ class ProfileController with ChangeNotifier{
 
         });
   }
+  Future<void> showUserNameDialogueAlert(BuildContext context,String userName)async{
+    namecontroller.text=userName;
+    return showDialog(context: context,
+        builder:(context){
+          return AlertDialog(
+            title: Text("Update User Name"),
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text_FormField(
+                    controller: namecontroller,
+                    focusnode: namefocusnode,
+                    labeltext: "Name",
+                    value: userName,
+                    obscure: false,
+                    current: namefocusnode,
+
+                  ),
+                ],
+
+              ),
+            ),
+            actions: [
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+              }, child: Text('Cancel')),
+              TextButton(onPressed: (){
+                ref.child(SessionController().userId.toString()).update({
+                  'name': namecontroller.text.toString()
+                }).then((value){
+                  namecontroller.clear();
+                });
+              },
+                  child: Text('Update'))
+            ],
+          );
+        });
+  }
+  Future<void> showMobileNumberDialogueAlert(BuildContext context,String mobileNumber)async{
+    mobileNumbercontroller.text=mobileNumber;
+    return showDialog(context: context,
+        builder:(context){
+          return AlertDialog(
+            title: Text("Update Mobile Number"),
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text_FormField(
+                    controller: mobileNumbercontroller,
+                    focusnode: mobileNumberfocusnode,
+                    labeltext: "Mobile Number",
+                    value: mobileNumber,
+                    obscure: false,
+                    current: mobileNumberfocusnode,
+
+                  ),
+                ],
+
+              ),
+            ),
+            actions: [
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+              }, child: Text('Cancel')),
+              TextButton(onPressed: (){
+                ref.child(SessionController().userId.toString()).update({
+                  'mobile': mobileNumbercontroller.text.toString()
+                }).then((value){
+                  mobileNumbercontroller.clear();
+                });
+              },
+                  child: Text('Update'))
+            ],
+          );
+        });
+  }
+
+
 
 }
