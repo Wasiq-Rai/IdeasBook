@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:madproject/MainScreen/mainScreen.dart';
 import 'package:madproject/views/dashboard/dashboard_Screen.dart';
 import 'package:madproject/views/login/login.dart';
 import 'package:madproject/views/signup/signup.dart';
 import '../../views/forgotPass/forgotPassword.dart';
+import '../../views/profilepage/profile_screen.dart';
 import '../../views/splash/splash_screen.dart';
 import 'route_names.dart';
 
@@ -21,6 +23,10 @@ class Routes {
         return MaterialPageRoute(builder: (_) =>   DashboardScreen());
       case RouteName.forgotpasswordScreen:
         return MaterialPageRoute(builder: (_) => const ForgotPasswordScreen());
+      case RouteName.profileScreen:
+        return MaterialPageRoute(builder: (_)=> ProfileScreen());
+      case RouteName.mainScreen:
+        return MaterialPageRoute(builder: (_)=> MainScreen());
 
 
       default:

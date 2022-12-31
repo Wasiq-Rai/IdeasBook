@@ -189,7 +189,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                             _formKey.currentState!.save();
                                             provider.signup(context,namecontroller.text, emailcontroller.text,
                                                 passwordcontroller.text, githubcontroller.text, mobilecontroller.text);
-                                            Navigator.pushNamed(context, RouteName.dashboardScreen);
                                             // Perform login here
                                           }
                                         },

@@ -25,6 +25,7 @@ try{
         SessionController().userId= value.user!.uid.toString();
         ref.child(value.user!.uid.toString()).set({
           "id": value.user!.uid.toString(),
+          "name": name,
           "email": value.user!.email.toString(),
           "password": password,
           "github": github,
@@ -35,7 +36,7 @@ try{
 
         }).then((value){
           setLoading(false);
-          Navigator.pushNamed(context, RouteName.dashboardScreen);
+          Navigator.pushNamed(context, RouteName.mainScreen);
         }).onError((error, stackTrace){
           setLoading(false);
           Utils.toastMessage(error.toString());

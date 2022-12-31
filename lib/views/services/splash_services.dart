@@ -44,7 +44,7 @@ class SplashServices {
       SessionController().userId =user.uid.toString();
       Timer(
           Duration(seconds: 3),
-              () => Navigator.pushNamed(context, RouteName.dashboardScreen));
+              () => Navigator.pushNamed(context, RouteName.mainScreen));
     } else {
       Timer(
           Duration(seconds: 3),
