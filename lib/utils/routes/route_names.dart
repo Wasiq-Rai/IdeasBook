@@ -10,5 +10,7 @@ class RouteName {
   static const String mainScreen = 'mainScreen';
   static const String settingsScreen = 'settingsScreen';
   static const String generalSettingsScreen = 'generalSettingsScreen';
+  static const String notifications = 'notifications';
+  static const String add_post = 'add_post';
 
 }

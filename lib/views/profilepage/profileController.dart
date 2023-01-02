@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:madproject/utils/utils/utils.dart';
-
+import 'package:madproject/res/color.dart' as color;
 import '../../utils/components/TextFormField.dart';
 import '../services/session_controller.dart';
 class ProfileController with ChangeNotifier{
@@ -46,6 +47,7 @@ class ProfileController with ChangeNotifier{
       uploadImage();
       notifyListeners();
     }
+
   }
   void uploadImage()async{
     setLoading(true);

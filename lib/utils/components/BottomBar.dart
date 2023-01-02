@@ -7,13 +7,17 @@ import 'package:madproject/views/dashboard/dashboard_Screen.dart';
 import 'package:madproject/views/profilepage/profile_screen.dart';
 import 'package:madproject/views/splash/splash_screen.dart';
 
+import '../../views/Notifications/notificationsScreen.dart';
+import '../../views/Posts/AddPost.dart';
 import '../../views/services/session_controller.dart';
 import '../routes/route_names.dart';
 
 
 const tabs= <String, IconData>{
   'trending' : Icons.trending_up,
+  'Post': Icons.add,
   'home': Icons.home,
+  'notify': Icons.notifications,
   'profile': Icons.person
 };
 
@@ -29,7 +33,7 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
-  var index=1;
+  var index=2;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
 
@@ -39,11 +43,12 @@ class _BottomBarState extends State<BottomBar> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
-      initialIndex: 1,
+      length: 5,
+      initialIndex: 2,
       child: SafeArea(
           child: Scaffold(
-            key: _scaffoldKey,              bottomNavigationBar: ConvexAppBar.badge(const <int, dynamic>{3: '99+'},
+            key: _scaffoldKey,
+            bottomNavigationBar: ConvexAppBar.badge(const <int, dynamic>{3: '0'},
                 items: <TabItem>[
                   for (final entry in tabs.entries)
                     TabItem(icon: entry.value,title: entry.key)
@@ -63,8 +68,24 @@ class _BottomBarState extends State<BottomBar> {
                   debugPrint("i: "+i.toString());
                   setState(() {
                     index=i;
-                    widget._widget=DashboardScreen();
+                    widget._widget=AddPostScreen();
                   });
+
+                  }
+                  else if(i==2){
+                    debugPrint("i: "+i.toString());
+                    setState(() {
+                      index=i;
+                      widget._widget=DashboardScreen();
+                    });
+
+                  }
+                  else if(i==3){
+                    debugPrint("i: "+i.toString());
+                    setState(() {
+                      index=i;
+                      widget._widget=NotificationsScreen();
+                    });
 
                   }
                   else
@@ -85,10 +106,7 @@ class _BottomBarState extends State<BottomBar> {
                     Container(
                       height: MediaQuery.of(context).size.height/(4),
                       color: Colors.black,
-                      child: Column(
-                        children: [
-                        ],
-                      ),
+
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -184,29 +202,34 @@ class _BottomBarState extends State<BottomBar> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Container(
-                          height: 150,
-                          width: 150,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Colors.pink,
-                                Colors.purple,
+                        InkWell(
+                          onTap: (){
+                            Navigator.pushNamed(context, RouteName.settingsScreen);
+                          },
+                          child: Container(
+                            height: 150,
+                            width: 150,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.pink,
+                                  Colors.purple,
+                                ],
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  offset: Offset(5, 5),
+                                  blurRadius: 10,
+                                  color: Colors.black,
+                                ),
                               ],
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                offset: Offset(5, 5),
-                                blurRadius: 10,
-                                color: Colors.black,
-                              ),
-                            ],
-                          ),
-                          child: Center(
-                            child: Text('Settings'),
+                            child: Center(
+                              child: Text('Settings'),
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -278,7 +301,7 @@ class _BottomBarState extends State<BottomBar> {
                 ),
               ),
 
-              body:(index==0)?SplashScreen():(index==1)?DashboardScreen():ProfileScreen() ,
+              body:(index==0)?SplashScreen():(index==1)?AddPostScreen():(index==2)?DashboardScreen():(index==3)?NotificationsScreen():ProfileScreen() ,
             appBar: AppBar(
               backgroundColor: Colors.purpleAccent,
               // LinearGradient(
@@ -294,7 +317,7 @@ class _BottomBarState extends State<BottomBar> {
               ),
               centerTitle: true,
               title: Text(
-                  SessionController().userId.toString(),
+                  "IdeasBook",
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
@@ -304,6 +327,12 @@ class _BottomBarState extends State<BottomBar> {
               actions: [
                 IconButton(
                   icon: Icon(Icons.search),
+                  onPressed: () {
+                    // Open the search screen
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.message),
                   onPressed: () {
                     // Open the search screen
                   },
